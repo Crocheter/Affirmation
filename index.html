@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For DFA</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      .arjs-loader {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .arjs-loader div {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="arjs-loader"><div>Loading AR experience...</div></div>
+
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; trackingMethod: best;"
+      vr-mode-ui="enabled: false"
+    >
+      <a-assets id="assetsContainer"></a-assets>
+
+      <a-nft
+        type="nft"
+        url="./Assets/Affirm"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+      >
+        <a-entity
+          id="affirmImage"
+          geometry="primitive: plane; height: 25; width: 35"
+          material="src: #affirm1"
+          position="100 30 -130"
+          rotation="-90 0 0"
+        ></a-entity>
+      </a-nft>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      const assetsContainer = document.getElementById("assetsContainer");
+      for (let i = 1; i <= 30; i++) {
+        const img = document.createElement("img");
+        img.setAttribute("id", `affirm${i}`);
+        img.setAttribute("src", `./Assets/gifs/affirm${i}.gif`);
+        assetsContainer.appendChild(img);
+      }
+
+      window.addEventListener("load", () => {
+        const today = new Date();
+        const dayOfMonth = today.getDate();
+        const currentDay = Math.min(dayOfMonth, 30); // Max 30
+        const affirmImage = document.getElementById("affirmImage");
+        affirmImage.setAttribute("material", "src", `#affirm${currentDay}`);
+        console.log("Showing affirmation for day:", currentDay);
+        document.querySelector(".arjs-loader").style.display = "none";
+      });
+    </script>
+  </body>
+</html>
